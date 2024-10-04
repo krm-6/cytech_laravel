@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\SalesController;
+use App\Http\Controllers\CompaniesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +19,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/sales', [SalesController::class, 'sales'])
+->name('sales');
+Route::get('/products', [ProductsController::class, 'products'])
+->name('products');
+Route::get('/companies', [CompaniesController::class, 'companies'])
+->name('companies');
 
 Auth::routes();
 

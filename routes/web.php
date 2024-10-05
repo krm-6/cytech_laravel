@@ -19,13 +19,9 @@ use App\Http\Controllers\CompaniesController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/sales', [SalesController::class, 'sales'])
-->name('sales');
-Route::get('/products', [ProductsController::class, 'products'])
-->name('products');
-Route::get('/companies', [CompaniesController::class, 'companies'])
-->name('companies');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('products', [ProductsController::class, 'index']);
+Route::get('products/{id}', [ProductsController::class, 'detail']);

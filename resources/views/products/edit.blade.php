@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<h2>商品情報詳細画面</h2>
+<h2>商品情報編集画面</h2>
 <table class="table">
   <tbody>
     <tr>
@@ -9,31 +9,31 @@
       <td>{{$product->id}}</td>
     </tr>
     <tr>
-      <th>商品画像</th>
-      <td>{{$product->img_path}}</td>
-    </tr>
-    <tr>
-      <th>商品名</th>
+      <th>商品名*</th>
       <td>{{$product->product_name}}</td>
     </tr>
     <tr>
-      <th>メーカー</th>
+      <th>メーカー名*</th>
       <td>{{$company->company_name}}</td>
     </tr>
     <tr>
-      <th>価格</th>
+      <th>価格*</th>
       <td>{{$product->price}}</td>
     </tr>
     <tr>
-      <th>在庫数</th>
+      <th>在庫数*</th>
       <td>{{$product->stock}}</td>
     </tr>
     <tr>
       <th>コメント</th>
       <td>{{$product->comment}}</td>
     </tr>
-    <a href="{{ route('products.edit', ['id' => $product->id]) }}" class="btn btn-primary">編集</a>
-    <a href="{{ route('products.index')}}" class="btn btn-secondary">戻る</a>
+    <tr>
+      <th>商品画像</th>
+      <td>{{$product->img_path}}</td>
+    </tr>
+    <button type="button" class="btn btn-info" onclick="redirect()->route('products.edit')">更新</button>
+    <button type="button" class="btn btn-info" onclick="{{ route('products.detail', ['id' => $product->id]) }}">戻る</button>
   </tbody>
 </table>
 

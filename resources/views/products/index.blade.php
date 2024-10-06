@@ -2,6 +2,22 @@
 
 @section('content')
 <h2>商品一覧画面</h2>
+
+<!-- 検索フォーム -->
+<form action="{{ route('products.search') }}" method="GET">
+    <div class="input-group">
+        <input type="text" class="form-control input-group-prepend" placeholder="検索キーワード"></input>
+        <span class="input-group-btn input-group-append">
+            <submit type="submit" id="btn-search" class="btn btn-primary" onclick="clickSearch()">
+                検索
+            </submit>
+        </span>
+    </div>
+</form>
+
+
+
+
 <table class="table">
   <thead>
     <tr>
@@ -24,9 +40,13 @@
             <td>{{$product->price}}</td>
             <td>{{$product->stock}}</td>
             <td>
-                <button type="button" class="btn btn-info">詳細</button>
-                <button type="button" class="btn btn-danger">削除</button>
+                <a href="{{ route('products.detail', ['id' => $product->id]) }}" class="btn btn-primary">詳細</a>
+                <form action="{{ route('products.destroy', ['id'=> $product->id]) }}" method="POST" style="display:inline;">
+                @csrf
+                <button type="submit" class="btn btn-danger">削除</button>
+                </form>
             </td>
+
         </tr>
     @endforeach
   </tbody>

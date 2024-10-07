@@ -9,40 +9,49 @@ use App\Models\Products;
 class ProductsController extends Controller
 {
     public function index() {
-        $products=products::all();
+        $products = products::all();
         return view('products.index', compact('products'));
     }
 
-    public function detail(string $id) {
-        $product=products::find($id);
-        $company=$product->company;
+    public function detail (string $id) {
+        $product = products::find($id);
+        $company = $product->company;
         return view('products.detail', compact('product', 'company'));
     }
 
     public function edit(string $id) {
-        $product=products::find($id);
-        $company=$product->company;
+        $product = products::find($id);
+        $company = $product->company;
         return view('products.edit', compact('product', 'company'));
+    }
+
+    public function update(Request $request)
+    {
+        $id = $request->input('id');
+        // IDに基づいて投稿を取得
+        $product = Products::findOrFail($id);
+        $product->update(
+            [
+                'product_name' => $request->product_name,
+                'price' => $request->price,
+                'stock' => $request->stock,
+                'comment' => $request->comment
+            ]
+        );
+        // 投稿データをedit.blade.phpに渡す
+        return redirect()->route('products.index');
     }
         /**
      * 削除処理
      */
-    public function destroy($id)
+    public function destroy ($id)
     {
         // Productsテーブルから指定のIDのレコード1件を取得
-        $product = Products::find($id);
+        $product = Products::find ($id);
         // レコードを削除
         $product->delete();
         // 削除したら一覧画面にリダイレクト
         return redirect()->route('products.index');
-    }
-
-    public function edit_page($id)
-    {
-        // IDに基づいて投稿を取得
-        $product = Products::findOrFail($id);
-        // 投稿データをedit.blade.phpに渡す
-        return view('products.edit', compact('product'));
     }
 
     public function search(Request $request)
@@ -59,5 +68,6 @@ class ProductsController extends Controller
         // ビューに検索結果を渡す
         return view('products.index', compact('products'));
     }
+
 
 }

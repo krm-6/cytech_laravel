@@ -26,5 +26,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/products', [ProductsController::class, 'index'])->name('products.index');
 Route::get('/products/{id}', [ProductsController::class, 'detail'])->name('products.detail');
 Route::get('/products/{id}/edit', [ProductsController::class, 'edit'])->name('products.edit');
+Route::get('/products/{id}/update', [ProductsController::class, 'update'])->name('products.update');
+Route::post('/products/{id}/update', [ProductsController::class, 'update'])->name('products.update');
 Route::post('/products/destroy/{id}', [ProductsController::class, 'destroy'])->name('products.destroy');
 Route::get('products/search', [ProductsController::class, 'search'])->name('products.search');

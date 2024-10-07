@@ -4,11 +4,11 @@
 <h2>商品一覧画面</h2>
 
 <!-- 検索フォーム -->
-<form action="{{ route('products.search') }}" method="GET">
-    <div class="input-group">
-        <input type="text" class="form-control input-group-prepend" placeholder="検索キーワード"></input>
-        <span class="input-group-btn input-group-append">
-            <submit type="submit" id="btn-search" class="btn btn-primary" onclick="clickSearch()">
+<form action = "{{ route('products.search') }}" method = "GET">
+    <div class = "input-group">
+        <input type = "text" class = "form-control input-group-prepend" placeholder = "検索キーワード"></input>
+        <span class = "input-group-btn input-group-append">
+            <submit type = "submit" id = "btn-search" class = "btn btn-primary" onclick = "clickSearch()">
                 検索
             </submit>
         </span>
@@ -18,7 +18,7 @@
 
 
 
-<table class="table">
+<table class = "table">
   <thead>
     <tr>
       <th>ID</th>
@@ -27,7 +27,7 @@
       <th>価格</th>
       <th>在庫数</th>
       <th>
-        <button type="button" class="btn btn-warning">新規登録</button>
+        <button type = "button" class = "btn btn-warning">新規登録</button>
     </th>
     </tr>
   </thead>
@@ -40,10 +40,10 @@
             <td>{{$product->price}}</td>
             <td>{{$product->stock}}</td>
             <td>
-                <a href="{{ route('products.detail', ['id' => $product->id]) }}" class="btn btn-primary">詳細</a>
-                <form action="{{ route('products.destroy', ['id'=> $product->id]) }}" method="POST" style="display:inline;">
-                @csrf
-                <button type="submit" class="btn btn-danger">削除</button>
+                <a href = "{{ route('products.detail', ['id' => $product->id]) }}" class = "btn btn-primary">詳細</a>
+                <form action = "{{ route('products.destroy', ['id'=> $product->id]) }}" method = "POST" class = "d-inline">
+                @csrf 
+                <button type = "submit" class = "btn btn-danger">削除</button>
                 </form>
             </td>
 

@@ -2,7 +2,7 @@
 
 @section('content')
 <h2>商品情報詳細画面</h2>
-<table class="table">
+<table class = "table">
   <tbody>
     <tr>
       <th>ID</th>
@@ -32,8 +32,8 @@
       <th>コメント</th>
       <td>{{$product->comment}}</td>
     </tr>
-    <a href="{{ route('products.edit', ['id' => $product->id]) }}" class="btn btn-primary">編集</a>
-    <a href="{{ route('products.index')}}" class="btn btn-secondary">戻る</a>
+    <a href = "{{ route('products.edit', ['id' => $product->id])}}" class = "btn btn-primary">編集</a>
+    <a href = "{{ route('products.index')}}" class = "btn btn-secondary">戻る</a>
   </tbody>
 </table>
 

@@ -11,4 +11,6 @@ class products extends Model
     public function company() {
         return $this->belongsTo(Companies::class, 'company_id');
     }
+
+    protected $fillable = ['company_id','product_name','price','stock','comment','img_path']; //保存したいカラム名が複数の場合
 }

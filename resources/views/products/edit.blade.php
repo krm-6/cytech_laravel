@@ -21,7 +21,14 @@
             </tr>
             <tr>
                 <th>メーカー名*</th>
-                <td>{{$company->company_name}}</td>
+                <td> 
+                    <select name = "company_id">
+                        <option value = ""></option>
+                        @foreach($companies as $company)
+                            <option value = "{{$company->id}}" @if($company->id===$selected_company->id)selected @endif>{{$company->company_name}}</option>
+                        @endforeach
+                    </select>
+                </td>
             </tr>
             <tr>
                 <th>価格*</th>

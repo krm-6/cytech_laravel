@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Products;
+use App\Models\Companies;
 
 class ProductsController extends Controller
 {
@@ -21,8 +22,9 @@ class ProductsController extends Controller
 
     public function edit(string $id) {
         $product = products::find($id);
-        $company = $product->company;
-        return view('products.edit', compact('product', 'company'));
+        $selected_company = $product->company;
+        $companies = companies::all();
+        return view('products.edit', compact('product', 'selected_company', 'companies'));
     }
 
     public function update(Request $request)
@@ -33,6 +35,7 @@ class ProductsController extends Controller
         $product->update(
             [
                 'product_name' => $request->product_name,
+                'company_id' => $request->company_id,
                 'price' => $request->price,
                 'stock' => $request->stock,
                 'comment' => $request->comment,
@@ -70,9 +73,12 @@ class ProductsController extends Controller
         return view('products.index', compact('products'));
     }
 
+    //新規登録画面を表示
     public function registration()
     {
-        return view('products.registration');
+        $companies = Companies::all();
+        //view()の第二引数に$companiesを渡す
+        return view('products.registration', compact('companies'));
     }
 
     // 新規登録処理を行うメソッド
@@ -86,7 +92,6 @@ class ProductsController extends Controller
     protected function create(array $data)
     {
         return Products::create([
-            'id' => $data['id'],
             'company_id' => $data['company_id'],
             'product_name' => $data['product_name'],
             'price' => $data['price'],

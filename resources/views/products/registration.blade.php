@@ -7,12 +7,6 @@
         @csrf
         <tbody>
             <tr>
-                <th>ID*</th>
-                <td>
-                    <input name = "id" type = "number" min = "0"></input>
-                </td>
-            </tr>
-            <tr>
                 <th>商品名*</th>
                 <td>
                     <input name = "product_name" type = "text"></input>
@@ -21,7 +15,12 @@
             <tr>
                 <th>メーカー名*</th>
                 <td>
-                    <input name = "company_id"></input>
+                    <select name = "company_id">
+                        <option value = ""></option>
+                        @foreach($companies as $company)
+                            <option value = "{{$company->id}}">{{$company->company_name}}</option>
+                        @endforeach
+                    </select>
                 </td>
             </tr>
             <tr>

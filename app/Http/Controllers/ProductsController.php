@@ -69,5 +69,31 @@ class ProductsController extends Controller
         return view('products.index', compact('products'));
     }
 
+    public function registration()
+    {
+        return view('products.registration');
+    }
+
+    // 新規登録処理を行うメソッド
+    public function register(Request $request)
+    {
+        // ユーザーの作成処理
+        $this->create($request->all());
+        return redirect()->route('products.index');
+    }
+
+    protected function create(array $data)
+    {
+        return Products::create([
+            'id' => $data['id'],
+            'company_id' => $data['company_id'],
+            'product_name' => $data['product_name'],
+            'price' => $data['price'],
+            'stock' => $data['stock'],
+            'comment' => $data['comment'],
+            'img_path' => $data['img_path']
+        ]);
+    }
+
 
 }

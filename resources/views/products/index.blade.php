@@ -6,7 +6,7 @@
 <!-- 検索フォーム -->
 <form action = "{{ route('products.search') }}" method = "GET">
     <div class = "input-group">
-        <input type = "text" class = "form-control input-group-prepend" placeholder = "検索キーワード"></input>
+        <input name="keyword" type = "text" class = "form-control input-group-prepend" placeholder = "検索キーワード"></input>
         <span class = "input-group-btn input-group-append">
             <submit type = "submit" id = "btn-search" class = "btn btn-primary" onclick = "clickSearch()">
                 検索
@@ -27,7 +27,9 @@
       <th>価格</th>
       <th>在庫数</th>
       <th>
-        <button type = "button" class = "btn btn-warning">新規登録</button>
+      <a href = "{{ route('products.registration') }}">
+        <button>新規登録</button>
+        </a>
     </th>
     </tr>
   </thead>

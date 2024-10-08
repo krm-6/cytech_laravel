@@ -22,7 +22,7 @@
     </tr>
     <tr>
       <th>価格</th>
-      <td>{{$product->price}}</td>
+      <td>¥{{$product->price}}</td>
     </tr>
     <tr>
       <th>在庫数</th>
@@ -32,8 +32,12 @@
       <th>コメント</th>
       <td>{{$product->comment}}</td>
     </tr>
-    <a href = "{{ route('products.edit', ['id' => $product->id])}}" class = "btn btn-primary">編集</a>
-    <a href = "{{ route('products.index')}}" class = "btn btn-secondary">戻る</a>
+    <tr>
+        <td colspan = "2">
+            <a href = "{{ route('products.edit', ['id' => $product->id])}}" class = "btn btn-primary">編集</a>
+            <a href = "{{ route('products.index')}}" class = "btn btn-secondary">戻る</a>
+        </td>
+    </tr>
   </tbody>
 </table>
 

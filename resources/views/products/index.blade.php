@@ -39,7 +39,7 @@
             <td>{{$product->id}}</td>
             <td>{{$product->img_path}}</td>
             <td>{{$product->product_name}}</td>
-            <td>{{$product->price}}</td>
+            <td>¥{{$product->price}}</td>
             <td>{{$product->stock}}</td>
             <td>
                 <a href = "{{ route('products.detail', ['id' => $product->id]) }}" class = "btn btn-primary">詳細</a>

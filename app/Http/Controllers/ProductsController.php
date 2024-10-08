@@ -35,7 +35,8 @@ class ProductsController extends Controller
                 'product_name' => $request->product_name,
                 'price' => $request->price,
                 'stock' => $request->stock,
-                'comment' => $request->comment
+                'comment' => $request->comment,
+                'img_path' => $request->img_path
             ]
         );
         // 投稿データをedit.blade.phpに渡す

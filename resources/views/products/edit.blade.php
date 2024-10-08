@@ -8,7 +8,10 @@
         <tbody>
             <tr>
                 <th>ID</th>
-                <td>{{$product->id}}</td>
+                <td>
+                    {{$product->id}}
+                    <input type="hidden" name = "id" value = "{{$product->id}}"></input>
+                </td>
             </tr>
             <tr>
                 <th>商品名*</th>
@@ -23,29 +26,31 @@
             <tr>
                 <th>価格*</th>
                 <td>
-                    <input name = "price" value = "{{$product->price}}"></input>
+                    <input name = "price" type = "number" min = "0" value = "{{$product->price}}"></input>
                 </td>
             </tr>
             <tr>
                 <th>在庫数*</th>
                 <td>
-                    <input name = "stock" value = "{{$product->stock}}"></input>
+                    <input name = "stock" type = "number" min = "0" value = "{{$product->stock}}"></input>
                 </td>
             </tr>
             <tr>
                 <th>コメント</th>
                 <td>
-                    <textarea name = "comment"></textarea>
+                    <textarea name = "comment" type = "text">{{$product->comment}}</textarea>
                 </td>
             </tr>
             <tr>
                 <th>商品画像</th>
-                <td>{{$product->img_path}}</td>
+                <td>
+                    <input type="file" name="img_path"/>
+                </td>
             </tr>
             <tr>
-                <td>
+                <td colspan = "2">
                     <button type="submit" class="btn btn-info">更新</button>
-                    <button class="btn btn-info" onclick="{{ route('products.detail', ['id' => $product->id]) }}">戻る</button>
+                    <a href = "{{ route('products.detail', ['id' => $product->id])}}" class = "btn btn-secondary">戻る</a>
                 </td>
             </tr>
         </tbody>

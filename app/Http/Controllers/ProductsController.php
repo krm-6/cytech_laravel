@@ -44,7 +44,7 @@ class ProductsController extends Controller
             ]
         );
         // 投稿データをedit.blade.phpに渡す
-        return redirect()->route('products.index');
+        return redirect()->route('products.edit', compact('id'));
     }
         /**
      * 削除処理
@@ -95,7 +95,7 @@ class ProductsController extends Controller
     {
         // ユーザーの作成処理
         $this->create($request->all());
-        return redirect()->route('products.index');
+        return redirect()->route('products.registration');
     }
 
     protected function create(array $data)

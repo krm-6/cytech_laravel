@@ -7,8 +7,14 @@
 <form action = "{{ route('products.search') }}" method = "GET">
     <div class = "input-group">
         <input name="keyword" type = "text" class = "form-control input-group-prepend" placeholder = "検索キーワード"></input>
+        <select name = "company_id">
+                        <option value = ""></option>
+                        @foreach($companies as $company)
+                            <option value = "{{$company->id}}">{{$company->company_name}}</option>
+                        @endforeach
+        </select>
         <span class = "input-group-btn input-group-append">
-            <submit type = "submit" id = "btn-search" class = "btn btn-primary" onclick = "clickSearch()">
+            <submit type = "submit" id = "btn-search" class = "btn" onclick = "clickSearch()">
                 検索
             </submit>
         </span>
@@ -18,7 +24,7 @@
 
 
 
-<table class = "table">
+<table class = "table table-striped">
   <thead>
     <tr>
       <th>ID</th>
@@ -28,7 +34,7 @@
       <th>在庫数</th>
       <th>
       <a href = "{{ route('products.registration') }}">
-        <button>新規登録</button>
+        <button type="button" class="btn btn-warning">新規登録</button>
         </a>
     </th>
     </tr>
@@ -42,10 +48,10 @@
             <td>¥{{$product->price}}</td>
             <td>{{$product->stock}}</td>
             <td>
-                <a href = "{{ route('products.detail', ['id' => $product->id]) }}" class = "btn btn-primary">詳細</a>
+                <a href = "{{ route('products.detail', ['id' => $product->id]) }}" class = "btn btn-info">詳細</a>
                 <form action = "{{ route('products.destroy', ['id'=> $product->id]) }}" method = "POST" class = "d-inline">
-                @csrf 
-                <button type = "submit" class = "btn btn-danger">削除</button>
+                    @csrf 
+                    <button type = "submit" class = "btn btn-danger">削除</button>
                 </form>
             </td>
 

@@ -14,13 +14,13 @@
                 </td>
             </tr>
             <tr>
-                <th>商品名*</th>
+                <th>商品名<span style=”color:red;”>*</span></th>
                 <td>
                     <input name = "product_name" value = "{{$product->product_name}}"></input>
                 </td>
             </tr>
             <tr>
-                <th>メーカー名*</th>
+                <th>メーカー名<span style=”color:red;”>*</span></th>
                 <td> 
                     <select name = "company_id">
                         <option value = ""></option>
@@ -31,13 +31,13 @@
                 </td>
             </tr>
             <tr>
-                <th>価格*</th>
+                <th>価格<span style=”color:red;”>*</span></th>
                 <td>
                     <input name = "price" type = "number" min = "0" value = "{{$product->price}}"></input>
                 </td>
             </tr>
             <tr>
-                <th>在庫数*</th>
+                <th>在庫数<span style=”color:red;”>*</span></th>
                 <td>
                     <input name = "stock" type = "number" min = "0" value = "{{$product->stock}}"></input>
                 </td>
@@ -56,8 +56,8 @@
             </tr>
             <tr>
                 <td colspan = "2">
-                    <button type="submit" class="btn btn-info">更新</button>
-                    <a href = "{{ route('products.detail', ['id' => $product->id])}}" class = "btn btn-secondary">戻る</a>
+                    <button type="submit" class="btn btn-warning">更新</button>
+                    <a href = "{{ route('products.detail', ['id' => $product->id])}}" class = "btn btn-info">戻る</a>
                 </td>
             </tr>
         </tbody>

@@ -34,8 +34,8 @@
     </tr>
     <tr>
         <td colspan = "2">
-            <a href = "{{ route('products.edit', ['id' => $product->id])}}" class = "btn btn-primary">編集</a>
-            <a href = "{{ route('products.index')}}" class = "btn btn-secondary">戻る</a>
+            <a href = "{{ route('products.edit', ['id' => $product->id])}}" class = "btn btn-warning">編集</a>
+            <a href = "{{ route('products.index')}}" class = "btn btn-info">戻る</a>
         </td>
     </tr>
   </tbody>

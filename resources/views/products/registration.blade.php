@@ -49,8 +49,8 @@
             </tr>
             <tr>
                 <td colspan = "2">
-                    <button type="submit" class="btn btn-info">新規登録</button>
-                    <a href = "{{ route('products.index')}}" class = "btn btn-secondary">戻る</a>
+                    <button type="submit" class="btn btn-warning">新規登録</button>
+                    <a href = "{{ route('products.index')}}" class = "btn btn-info">戻る</a>
                 </td>
             </tr>
         </tbody>

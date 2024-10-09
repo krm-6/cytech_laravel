@@ -11,7 +11,8 @@ class ProductsController extends Controller
 {
     public function index() {
         $products = products::all();
-        return view('products.index', compact('products'));
+        $companies = companies::all();
+        return view('products.index', compact('products', 'companies'));
     }
 
     public function detail (string $id) {
@@ -57,11 +58,12 @@ class ProductsController extends Controller
         // 削除したら一覧画面にリダイレクト
         return redirect()->route('products.index');
     }
-
+    //キーワード検索
     public function search(Request $request)
     {
         // 検索キーワードを取得
         $keyword = $request->input('keyword');
+        $company_id = $request->input('company_id');
         if ($keyword) {
             $products = Products::where('product_name', 'like', "%{$keyword}%")
                          ->get();
@@ -100,6 +102,4 @@ class ProductsController extends Controller
             'img_path' => $data['img_path']
         ]);
     }
-
-
 }

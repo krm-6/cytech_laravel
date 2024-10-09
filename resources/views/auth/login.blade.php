@@ -14,7 +14,7 @@
                         <div class="row mb-3">
 
                             <div class="col-md-6">
-                                <input id="email" type="email" placeholder="メールアドレス" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input name="email" type="email" placeholder="メールアドレス" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -27,7 +27,7 @@
                         <div class="row mb-3">
 
                             <div class="col-md-6">
-                                <input id="password" type="password" placeholder="パスワード" class="form-control">
+                                <input name="password" type="password" placeholder="パスワード" class="form-control">
 
                             </div>
                         </div>

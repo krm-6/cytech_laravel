@@ -48,7 +48,7 @@
                                 <button type="submit" class="btn btn-warning">
                                     {{ __('新規登録') }}
                                 </button>
-                                <a href = "{{ route('home')}}" class = "btn btn-info">戻る</a>
+                                <a href = "{{ route('login')}}" class = "btn btn-info">戻る</a>
                             </div>
                         </div>
                     </form>

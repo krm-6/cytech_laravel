@@ -14,9 +14,9 @@
                         @endforeach
         </select>
         <span class = "input-group-btn input-group-append">
-            <submit type = "submit" id = "btn-search" class = "btn" onclick = "clickSearch()">
+            <button type = "submit" class = "btn">
                 検索
-            </submit>
+            </button>
         </span>
     </div>
 </form>

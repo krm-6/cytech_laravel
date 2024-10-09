@@ -17,19 +17,18 @@ use App\Http\Controllers\CompaniesController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login'); // ログイン画面にリダイレクト
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/products', [ProductsController::class, 'index'])->name('products.index');
-Route::get('/products/registration', [ProductsController::class, 'registration'])->name('products.registration');
-Route::post('/products/register', [ProductsController::class, 'register'])->name('products.register');
-Route::get('/products/search', [ProductsController::class, 'search'])->name('products.search');
-Route::get('/products/{id}', [ProductsController::class, 'detail'])->name('products.detail');
-Route::get('/products/{id}/edit', [ProductsController::class, 'edit'])->name('products.edit');
-Route::post('/products/{id}/update', [ProductsController::class, 'update'])->name('products.update');
-Route::post('/products/destroy/{id}', [ProductsController::class, 'destroy'])->name('products.destroy');
+Route::get('/products', [ProductsController::class, 'index'])->name('products.index')->middleware('auth');
+Route::get('/products/registration', [ProductsController::class, 'registration'])->name('products.registration')->middleware('auth');
+Route::post('/products/register', [ProductsController::class, 'register'])->name('products.register')->middleware('auth');
+Route::get('/products/search', [ProductsController::class, 'search'])->name('products.search')->middleware('auth');
+Route::get('/products/{id}', [ProductsController::class, 'detail'])->name('products.detail')->middleware('auth');
+Route::get('/products/{id}/edit', [ProductsController::class, 'edit'])->name('products.edit')->middleware('auth');
+Route::post('/products/{id}/update', [ProductsController::class, 'update'])->name('products.update')->middleware('auth');
+Route::post('/products/destroy/{id}', [ProductsController::class, 'destroy'])->name('products.destroy')->middleware('auth');
 
 

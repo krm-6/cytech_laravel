@@ -64,15 +64,22 @@ class ProductsController extends Controller
         // 検索キーワードを取得
         $keyword = $request->input('keyword');
         $company_id = $request->input('company_id');
-        if ($keyword) {
-            $products = Products::where('product_name', 'like', "%{$keyword}%")
-                         ->get();
+        if ($keyword || $company_id) {
+            $where = [];
+            if($keyword){
+                array_push($where, ['product_name', 'like', "%{$keyword}%"]);
+            }
+            if($company_id){
+                array_push($where, ['company_id', '=', $company_id]);
+            }
+            $products = Products::where($where)->get();
         } else {
             // すべての投稿を取得
             $products = Products::all();
         }
         // ビューに検索結果を渡す
-        return view('products.index', compact('products'));
+        $companies = companies::all();
+        return view('products.index', compact('products', 'companies'));
     }
 
     //新規登録画面を表示

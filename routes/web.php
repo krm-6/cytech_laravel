@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductsController;
-use App\Http\Controllers\SalesController;
-use App\Http\Controllers\CompaniesController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +20,15 @@ Route::get('/', function () {
     return redirect()->route('login'); // ログイン画面にリダイレクト
 });
 
-Auth::routes();
+
+// ログインルート
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [LoginController::class, 'login']);
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+// 登録ルート
+Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('register', [RegisterController::class, 'register']);
 
 Route::get('/products', [ProductsController::class, 'index'])->name('products.index')->middleware('auth');
 Route::get('/products/registration', [ProductsController::class, 'registration'])->name('products.registration')->middleware('auth');

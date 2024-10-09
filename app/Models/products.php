@@ -29,23 +29,7 @@ class products extends Model
     // テーブルに関連付ける主キー
     protected $primaryKey = 'id';
 
-    // 登録・更新可能なカラムの指定
     
     
-    /**
-     * 一覧画面表示用にbooksテーブルから全てのデータを取得
-     */
-    public function findAllProducts()
-    {
-        return product::all();
-    }
-
-    public function InsertProduct($request)
-    {
-        // リクエストデータを基に管理マスターユーザーに登録する
-        $this->create([
-            'product' => $request->product,
-        ]);
-    }
 
 }

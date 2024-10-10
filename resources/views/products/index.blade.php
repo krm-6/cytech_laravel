@@ -6,25 +6,23 @@
 <!-- 検索フォーム -->
 <form action = "{{ route('products.search') }}" method = "GET">
     <div class = "input-group">
-        <input name="keyword" type = "text" class = "form-control input-group-prepend" placeholder = "検索キーワード"></input>
-        <select name = "company_id">
-                        <option value = ""></option>
-                        @foreach($companies as $company)
-                            <option value = "{{$company->id}}">{{$company->company_name}}</option>
-                        @endforeach
-        </select>
-        <span class = "input-group-btn input-group-append">
+            <input name="keyword" type = "text" class = "form-control" placeholder = "検索キーワード"></input>
+            <select name = "company_id" class="form-control">
+                <option value = ""></option>
+                @foreach($companies as $company)
+                    <option value = "{{$company->id}}">{{$company->company_name}}</option>
+                @endforeach
+            </select>
             <button type = "submit" class = "btn">
                 検索
             </button>
-        </span>
     </div>
 </form>
 
 
 
 
-<table class = "table table-striped">
+<table class = "table table-striped table-bordered">
   <thead>
     <tr>
       <th>ID</th>

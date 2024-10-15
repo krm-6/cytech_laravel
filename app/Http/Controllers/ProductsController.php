@@ -6,11 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Products;
 use App\Models\Companies;
+use Illuminate\Support\Facades\DB;
 
 class ProductsController extends Controller
 {
     public function index() {
-        $products = products::all();
+        $products = DB::table('products')
+        ->leftJoin('companies', 'products.company_id', '=', 'companies.id')
+        ->select('products.*', 'companies.company_name')
+        ->get();
         $companies = companies::all();
         return view('products.index', compact('products', 'companies'));
     }

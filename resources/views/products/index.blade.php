@@ -30,6 +30,7 @@
       <th>商品名</th>
       <th>価格</th>
       <th>在庫数</th>
+      <th>メーカー名</th>
       <th>
       <a href = "{{ route('products.registration') }}">
         <button type="button" class="btn btn-warning">新規登録</button>
@@ -45,6 +46,7 @@
             <td>{{$product->product_name}}</td>
             <td>¥{{$product->price}}</td>
             <td>{{$product->stock}}</td>
+            <td>{{$product->company_name}}</td>
             <td>
                 <a href = "{{ route('products.detail', ['id' => $product->id]) }}" class = "btn btn-info">詳細</a>
                 <form action = "{{ route('products.destroy', ['id'=> $product->id]) }}" method = "POST" class = "d-inline">

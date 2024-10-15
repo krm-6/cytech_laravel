@@ -3,7 +3,7 @@
 @section('content')
 <h2>商品情報編集画面</h2>
     <table class = "table">
-<form action = "{{ route('products.update', ['id' => $product->id])}}" method = "post">
+<form action = "{{ route('products.update', ['id' => $product->id])}}" method = "post" enctype="multipart/form-data">
 @csrf
         <tbody>
             <tr>

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('style')
+<link rel = "stylesheet" href="{{ asset('/css/detail.css') }}">
+@endpush
+
 @section('content')
 <h2>商品情報詳細画面</h2>
 <table class = "table">
@@ -10,7 +14,7 @@
     </tr>
     <tr>
       <th>商品画像</th>
-      <td><img src="{{ asset('storage/Image/' . $product->img_path) }}" ></td>
+      <td><img src="{{ asset('storage/Image/' . $product->img_path) }}" class = "ProductImage"></td>
     </tr>
     <tr>
       <th>商品名</th>
@@ -42,3 +46,4 @@
 </table>
 
 @endsection
+

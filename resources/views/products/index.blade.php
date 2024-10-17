@@ -8,7 +8,7 @@
     <div class = "input-group">
             <input name="keyword" type = "text" class = "form-control" placeholder = "検索キーワード"></input>
             <select name = "company_id" class="form-control">
-                <option value = ""></option>
+                <option value = "">メーカー名</option>
                 @foreach($companies as $company)
                     <option value = "{{$company->id}}">{{$company->company_name}}</option>
                 @endforeach

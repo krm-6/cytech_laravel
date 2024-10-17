@@ -121,24 +121,25 @@ class ProductsController extends Controller
         
         $validated = $this->validation($request);
         try {
+             
+            if ($request->img_path) {
+                $img_path = basename($request->file('img_path')->store('public/Image'));
+            } else {
+                $img_path = null;
+            }
             // 作成処理
-            $this->create($request->all());
+            Products::create([
+                'product_name' => $request->product_name,
+                'company_id' => $request->company_id,
+                'price' => $request->price,
+                'stock' => $request->stock,
+                'comment' => $request->comment,
+                'img_path' => $img_path
+            ]);
             return redirect()->route('products.registration');
         } catch (\Exception $e) {
             return redirect()->route('products.registration')->with('error', 'エラーが発生しました。');
         }
-    }
-
-    protected function create(array $data)
-    {
-        return Products::create([
-            'company_id' => $data['company_id'],
-            'product_name' => $data['product_name'],
-            'price' => $data['price'],
-            'stock' => $data['stock'],
-            'comment' => $data['comment'],
-            'img_path' => $data['img_path']
-        ]);
     }
 
     protected function validation (Request $request){

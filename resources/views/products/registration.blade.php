@@ -7,7 +7,7 @@
 @section('content')
 <h2>商品新規登録画面</h2>
 <table class = "table">
-    <form action = "{{ route('products.register')}}" method = "post">
+    <form action = "{{ route('products.register')}}" method = "post" enctype="multipart/form-data">
         @csrf
         <tbody>
             <tr>

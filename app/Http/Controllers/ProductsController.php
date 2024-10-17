@@ -20,23 +20,44 @@ class ProductsController extends Controller
     }
     // 商品詳細画面
     public function detail (string $id) {
+        
+
         $product = products::find($id);
         $company = $product->company;
         return view('products.detail', compact('product', 'company'));
     }
     // 商品情報編集画面（画面表示）
     public function edit(string $id) {
+        
         $product = products::find($id);
         $selected_company = $product->company;
         $companies = companies::all();
+        
         return view('products.edit', compact('product', 'selected_company', 'companies'));
     }
     // 商品情報編集画面（更新処理）
     public function update(Request $request)
-    {
+    {   
+        
         $id = $request->input('id');
         // IDに基づいて投稿を取得
         $product = Products::findOrFail($id);
+
+         $validated = $request->validate([
+            'product_name' => 'required | string',
+            'price' => 'required | integer',
+            'stock' => 'required | numeric',
+            'comment' => 'nullable | max:10000',
+        ], [
+            'product_name.required' => '名前は必須です。',
+            'product_name.string' => '文字を入力してください。',
+            'price.required' => '価格は必須です。',
+            'price.integer' => '整数で入力してください。',
+            'stock.numeric' => '数値で入力してください。',
+            'stock.required' => '在庫数は必須です。',
+            'comment' => 'コメントは10000文字以内で入力してください。',
+        ]);
+
         if ($request->img_path) {
             $img_path = basename($request->file('img_path')->store('public/Image'));
         } else {
@@ -103,7 +124,21 @@ class ProductsController extends Controller
     // 新規登録処理を行うメソッド
     public function register(Request $request)
     {
-        // ユーザーの作成処理
+        $validated = $request->validate([
+            'product_name' => 'required | string',
+            'price' => 'required | integer',
+            'stock' => 'required | numeric',
+            'comment' => 'nullable | max:10000',
+            'img_path' => 'nullable | image',
+        ], [
+            'product_name' => '名前は必須です。',
+            'price' => '価格は必須です。',
+            'stock' => '在庫数は必須です。',
+            'comment' => 'コメントは10000文字以内で入力してください。',
+            'img_path' => '画像ファイルを指定してください。',
+        ]);
+
+        // 作成処理
         $this->create($request->all());
         return redirect()->route('products.registration');
     }

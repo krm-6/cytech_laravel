@@ -30,6 +30,11 @@
                             <option value = "{{$company->id}}" {{ old('company_id') == $company->id ? 'selected' : ''}}>{{$company->company_name}} </option>
                         @endforeach
                     </select>
+                    @if ($errors->has('company_id'))
+                        <div class="alert alert-danger">
+                            {{ $errors->first('company_id') }}
+                        </div>
+                    @endif
                 </td>
             </tr>
             <tr>
@@ -75,6 +80,11 @@
                 <td colspan = "2">
                     <button type="submit" class="btn btn-warning">新規登録</button>
                     <a href = "{{ route('products.index')}}" class = "btn btn-info">戻る</a>
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                 </td>
             </tr>
         </tbody>

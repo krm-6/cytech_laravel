@@ -20,7 +20,12 @@
             <tr>
                 <th>商品名<span class = "kome">*</span></th>
                 <td>
-                    <input name = "product_name" value = "{{old($product->product_name)}}"></input>
+                    <input name = "product_name" value = "{{$product->product_name}}"></input>
+                    @if ($errors->has('product_name'))
+                        <div class="alert alert-danger">
+                            {{ $errors->first('product_name') }}
+                        </div>
+                    @endif
                 </td>
             </tr>
             <tr>
@@ -41,19 +46,49 @@
             <tr>
                 <th>価格<span class = "kome">*</span></th>
                 <td>
-                    <input name = "price" type = "number" min = "0" value = "{{old($product->price)}}"></input>
+                    @php
+                        // 選択されたidを変数に入れる。選択されたものをold関数で保持する。
+                        $price = old('price') || old('price') === "" ? old('price') : $product->price;
+                    @endphp
+                    {{-- 上で判定されたもの（$price）を値として代入する。 --}}
+                    <input name = "price" type = "number" min = "0" value = "{{$price}}"></input>
+                    @if ($errors->has('price'))
+                        <div class="alert alert-danger">
+                            {{ $errors->first('price') }}
+                        </div>
+                    @endif
                 </td>
             </tr>
             <tr>
                 <th>在庫数<span class = "kome">*</span></th>
                 <td>
-                    <input name = "stock" type = "number" min = "0" value = "{{old($product->stock)}}"></input>
+                    @php
+                        // 選択されたidを変数に入れる。選択されたものをold関数で保持する。
+                        $price = old('stock') || old('stock') === "" ? old('stock') : $product->stock;
+                    @endphp
+                    {{-- 上で判定されたものを値として代入する。 --}}
+                    <input name = "stock" type = "number" min = "0" value = "{{($product->stock)}}"></input>
+                    @if ($errors->has('stock'))
+                        <div class="alert alert-danger">
+                            {{ $errors->first('stock') }}
+                        </div>
+                    @endif
                 </td>
             </tr>
             <tr>
                 <th>コメント</th>
                 <td>
-                    <textarea name = "comment" type = "text">{{old('comment')}}</textarea>
+                    @php
+                        // 選択されたidを変数に入れる。選択されたものをold関数で保持する。
+                        $price = old('comment') || old('comment') === "" ? old('comment') : $product->comment;
+                    @endphp
+                    {{-- 上で判定されたものを値として代入する。 --}}
+                    <textarea name = "comment" type = "text">{{$product->comment}}</textarea>
+                    @if ($errors->has('comment'))
+                        <div class="alert alert-danger">
+                            {{ $errors->first('comment') }}
+                        </div>
+                    @endif
                 </td>
             </tr>
             <tr>
@@ -66,6 +101,11 @@
                 <td colspan = "2">
                     <button type="submit" class="btn btn-warning">更新</button>
                     <a href = "{{ route('products.detail', ['id' => $product->id])}}" class = "btn btn-info">戻る</a>
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                 </td>
             </tr>
         </tbody>

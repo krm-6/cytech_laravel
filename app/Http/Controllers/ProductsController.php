@@ -84,7 +84,7 @@ class ProductsController extends Controller
         }
     }
     //キーワード検索
-    public function search(ProductsRequest $request)
+    public function search(Request $request)
     {
         // 検索キーワードを取得
         $keyword = $request->input('keyword');
@@ -122,7 +122,7 @@ class ProductsController extends Controller
         try {
              
             if ($request->img_path) {
-                $img_path = basename($validatedData->file('img_path')->store('public/Image'));
+                $img_path = basename($request->file('img_path')->store('public/Image'));
             } else {
                 $img_path = null;
             }

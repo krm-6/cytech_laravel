@@ -6,11 +6,11 @@
 <!-- 検索フォーム -->
 <form action = "{{ route('products.search') }}" method = "GET">
     <div class = "input-group">
-            <input name="keyword" type = "text" class = "form-control" placeholder = "検索キーワード"></input>
+            <input name="keyword" type = "text" class = "form-control" placeholder = "検索キーワード" value="{{request('keyword')}}"></input>
             <select name = "company_id" class="form-control">
                 <option value = "">メーカー名</option>
                 @foreach($companies as $company)
-                    <option value = "{{$company->id}}">{{$company->company_name}}</option>
+                    <option value = "{{$company->id}}" {{$company->id===intval(request('company_id')) ? 'selected': ''}}>{{$company->company_name}}</option>
                 @endforeach
             </select>
             <button type = "submit" class = "btn">

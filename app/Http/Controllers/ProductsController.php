@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductsRequest;
 use Illuminate\Http\Request;
 use App\Models\Products;
 use App\Models\Companies;
@@ -36,13 +37,12 @@ class ProductsController extends Controller
         return view('products.edit', compact('product', 'selected_company', 'companies'));
     }
     // 商品情報編集画面（更新処理）
-    public function update(Request $request)
+    public function update(ProductsRequest $request)
     {   
             $id = $request->input('id');
             // IDに基づいて投稿を取得
             $product = Products::findOrFail($id);
-
-            $validated = $this->validation($request);
+            $validatedData = $request->validated();
             try {
                 
             if ($request->img_path) {
@@ -53,18 +53,18 @@ class ProductsController extends Controller
 
             $product->update(
                 [
-                    'product_name' => $request->product_name,
-                    'company_id' => $request->company_id,
-                    'price' => $request->price,
-                    'stock' => $request->stock,
-                    'comment' => $request->comment,
-                    'img_path' => $img_path
+                    'product_name' => $validatedData['product_name'],
+                    'company_id' => $validatedData['company_id'],
+                    'price' => $validatedData['price'],
+                    'stock' => $validatedData['stock'],
+                    'comment' => $validatedData['comment'],
+                    'img_path' => $img_path,
                 ]
             );
             // 投稿データをedit.blade.phpに渡す
             return redirect()->route('products.edit', compact('id'));
             } catch (\Exception $e) {
-                return redirect()->route('products.edit')->with('error', 'エラーが発生しました。');
+                return redirect()->route('products.edit', ['id' => $product->id])->with('error', 'エラーが発生しました。');
             }
     }
         /**
@@ -84,7 +84,7 @@ class ProductsController extends Controller
         }
     }
     //キーワード検索
-    public function search(Request $request)
+    public function search(ProductsRequest $request)
     {
         // 検索キーワードを取得
         $keyword = $request->input('keyword');
@@ -116,25 +116,24 @@ class ProductsController extends Controller
     }
 
     // 新規登録処理を行うメソッド
-    public function register(Request $request)
+    public function register(ProductsRequest $request)
     {
-        
-        $validated = $this->validation($request);
+        $validatedData = $request->validated();
         try {
              
             if ($request->img_path) {
-                $img_path = basename($request->file('img_path')->store('public/Image'));
+                $img_path = basename($validatedData->file('img_path')->store('public/Image'));
             } else {
                 $img_path = null;
             }
             // 作成処理
             Products::create([
-                'product_name' => $request->product_name,
-                'company_id' => $request->company_id,
-                'price' => $request->price,
-                'stock' => $request->stock,
-                'comment' => $request->comment,
-                'img_path' => $img_path
+                'product_name' => $validatedData['product_name'],
+                'company_id' => $validatedData['company_id'],
+                'price' => $validatedData['price'],
+                'stock' => $validatedData['stock'],
+                'comment' => $validatedData['comment'],
+                'img_path' => $img_path,
             ]);
             return redirect()->route('products.registration');
         } catch (\Exception $e) {
@@ -142,22 +141,17 @@ class ProductsController extends Controller
         }
     }
 
-    protected function validation (Request $request){
-       return $request->validate([
-            'product_name' => 'required | string',
-            'price' => 'required | integer',
-            'stock' => 'required | numeric',
-            'comment' => 'nullable | max:10000',
-            'company_id' => 'required',
-        ], [
-            'product_name.required' => '名前は必須です。',
-            'product_name.string' => '文字を入力してください。',
-            'price.required' => '価格は必須です。',
-            'price.integer' => '整数で入力してください。',
-            'stock.numeric' => '数値で入力してください。',
-            'stock.required' => '在庫数は必須です。',
-            'comment' => 'コメントは10000文字以内で入力してください。',
-            'company_id.required' => 'メーカー名を入力してください。' ,
-        ]);
+    public function registSubmit(ProductsRequest $request) {
+        DB::beginTransaction();
+
+        try {
+            $model = new Products();
+            $model -> registProducts($request);
+            DB::commit();
+        } catch(\Exception $e) {
+            DB::rollBack();
+            return back();
+        }
+        return redirect(route('regist'));
     }
 }

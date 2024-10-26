@@ -12,24 +12,19 @@ use Illuminate\Support\Facades\DB;
 class ProductsController extends Controller
 {
     public function index() {
-        $products = DB::table('products')
-        ->leftJoin('companies', 'products.company_id', '=', 'companies.id')
-        ->select('products.*', 'companies.company_name')
-        ->get();
+        $model = new Products();
+        $products = $model->getLists([]);
         $companies = companies::all();
         return view('products.index', compact('products', 'companies'));
     }
     // 商品詳細画面
     public function detail (string $id) {
-
-
         $product = products::find($id);
         $company = $product->company;
         return view('products.detail', compact('product', 'company'));
     }
     // 商品情報編集画面（画面表示）
     public function edit(string $id) {
-        
         $product = products::find($id);
         $selected_company = $product->company;
         $companies = companies::all();
@@ -45,24 +40,24 @@ class ProductsController extends Controller
             $validatedData = $request->validated();
             try {
                 
-            if ($request->img_path) {
-                $img_path = basename($request->file('img_path')->store('public/Image'));
-            } else {
-                $img_path = null;
-            }
+                if ($request->img_path) {
+                    $img_path = basename($request->file('img_path')->store('public/Image'));
+                } else {
+                    $img_path = null;
+                }
 
-            $product->update(
-                [
-                    'product_name' => $validatedData['product_name'],
-                    'company_id' => $validatedData['company_id'],
-                    'price' => $validatedData['price'],
-                    'stock' => $validatedData['stock'],
-                    'comment' => $validatedData['comment'],
-                    'img_path' => $img_path,
-                ]
-            );
-            // 投稿データをedit.blade.phpに渡す
-            return redirect()->route('products.edit', compact('id'));
+                $product->update(
+                    [
+                        'product_name' => $validatedData['product_name'],
+                        'company_id' => $validatedData['company_id'],
+                        'price' => $validatedData['price'],
+                        'stock' => $validatedData['stock'],
+                        'comment' => $validatedData['comment'],
+                        'img_path' => $img_path,
+                    ]
+                );
+                // 投稿データをedit.blade.phpに渡す
+                return redirect()->route('products.edit', compact('id'));
             } catch (\Exception $e) {
                 return redirect()->route('products.edit', ['id' => $product->id])->with('error', 'エラーが発生しました。');
             }
@@ -89,19 +84,18 @@ class ProductsController extends Controller
         // 検索キーワードを取得
         $keyword = $request->input('keyword');
         $company_id = $request->input('company_id');
+        $model = new Products();
+        $where = [];
+
         if ($keyword || $company_id) {
-            $where = [];
             if($keyword){
                 array_push($where, ['product_name', 'like', "%{$keyword}%"]);
             }
             if($company_id){
                 array_push($where, ['company_id', '=', $company_id]);
             }
-            $products = Products::where($where)->get();
-        } else {
-            // すべての投稿を取得
-            $products = Products::all();
-        }
+        } 
+        $products = $model->getLists($where);
         // ビューに検索結果を渡す
         $companies = companies::all();
         return view('products.index', compact('products', 'companies'));

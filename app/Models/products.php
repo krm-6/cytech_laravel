@@ -4,13 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class products extends Model
 {
     use HasFactory;
-    public function company() {
-        return $this->belongsTo(Companies::class, 'company_id');
-    }
 
     protected $fillable = [
         'company_id',
@@ -29,6 +27,20 @@ class products extends Model
     // テーブルに関連付ける主キー
     protected $primaryKey = 'id';
 
+    // 一覧表示用リスト取得（companiesテーブルと結合）
+    public function getLists($where) {
+        $products = $this
+        ->leftJoin('companies', 'products.company_id', '=', 'companies.id')
+        ->select('products.*', 'companies.company_name')
+        ->where($where)
+        ->get();
+        return $products;
+    }
+
+    // company_idに紐づくcompaniesを取得
+    public function company() {
+        return $this->belongsTo(Companies::class, 'company_id');
+    }
     
     
 

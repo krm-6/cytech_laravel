@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('style')
+<link rel = "stylesheet" href="{{ asset('/css/index.css') }}">
+@endpush
+
 @section('content')
 <h2>商品一覧画面</h2>
 
@@ -47,7 +51,7 @@
     @foreach($products as $product)
         <tr>
             <td>{{$product->id}}</td>
-            <td>{{$product->img_path}}</td>
+            <td><img src="{{ asset('storage/Image/' . $product->img_path) }}" class = "ProductImage"></td>
             <td>{{$product->product_name}}</td>
             <td>¥{{$product->price}}</td>
             <td>{{$product->stock}}</td>

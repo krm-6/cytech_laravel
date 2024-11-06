@@ -82,14 +82,14 @@ class ProductsController extends Controller
     public function search(Request $request)
     {
         // 検索キーワードを取得
-        $keyword = $request->input('keyword');
+        $product_name = $request->input('product_name');
         $company_id = $request->input('company_id');
         $model = new Products();
         $where = [];
 
-        if ($keyword || $company_id) {
-            if($keyword){
-                array_push($where, ['product_name', 'like', "%{$keyword}%"]);
+        if ($product_name || $company_id) {
+            if($product_name){
+                array_push($where, ['product_name', 'like', "%{$product_name}%"]);
             }
             if($company_id){
                 array_push($where, ['company_id', '=', $company_id]);
@@ -98,7 +98,7 @@ class ProductsController extends Controller
         $products = $model->getLists($where);
         // ビューに検索結果を渡す
         $companies = companies::all();
-        return view('products.index', compact('products', 'companies'));
+        return response() -> json($products);
     }
 
     //新規登録画面を表示

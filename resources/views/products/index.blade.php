@@ -49,7 +49,7 @@
   </thead>
   <tbody>
     @foreach($products as $product)
-        <tr>
+        <tr class = "ProductRow">
             <td>{{$product->id}}</td>
             <td><img src="{{ asset('storage/Image/' . $product->img_path) }}" class = "ProductImage"></td>
             <td>{{$product->product_name}}</td>
@@ -58,10 +58,7 @@
             <td>{{$product->company_name}}</td>
             <td>
                 <a href = "{{ route('products.detail', ['id' => $product->id]) }}" class = "btn btn-info">詳細</a>
-                <form action = "{{ route('products.destroy', ['id'=> $product->id]) }}" method = "POST" class = "d-inline">
-                    @csrf 
-                    <button type = "submit" class = "btn btn-danger">削除</button>
-                </form>
+                <button class = "btn btn-danger BtnDestroy" data-id = "{{$product->id}}">削除</button>
             </td>
         </tr>
     @endforeach
@@ -101,7 +98,7 @@
                             let productDestroyUrl = productDestroyBaseUrl.replace(':id', product.id);
                         //検索結果を表示する場所の要素に結果のHTMLを挿入して表示
                             $('#productTable tbody').append(`
-                                <tr>
+                                <tr class = "ProductRow">
                                     <td>${product.id}</td>
                                     <td><img src="${ '{{asset("storage/Image")}}' + '/' + product.img_path }" class = "ProductImage"></td>
                                     <td>${product.product_name}</td>
@@ -110,11 +107,7 @@
                                     <td>${product.company_name}</td>
                                     <td>
                                         <a href="${productDetailUrl}" class="btn btn-info">詳細</a>
-                                        <form action="${productDestroyUrl}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">削除</button>
-                                        </form>
+                                        <button class = "btn btn-danger BtnDestroy" data-id = "${product.id}">削除</button>
                                     </td>
                                 </tr>
                             `);
@@ -126,6 +119,33 @@
                     }
                 });
             });
+            
+            //クリックイベントを設定。onclickを使うと後から追加された要素にもイベントを適用できるようになる。
+            $('#productTable').on('click', '.BtnDestroy',function(e) {
+                //eはクリックイベントのイベントオブジェクト。preventDefault();で削除ボタンのデフォルトのクリック動作をキャンセルできる。
+                e.preventDefault();
+                // thisはクリックされた削除ボタン要素。data-id属性で削除対象のＩＤを取得。
+                let self = $(this);
+                let productId = self.data('id');
+                $.ajax({
+                    url: '{{ route('products.destroy') }}',
+                    method: 'POST',
+                    data: {
+                        id: productId
+                    },
+                    // X-CSRF-TOKEN ヘッダーに csrf_token() を使ってCSRFトークンを設定するとJSで送信するAJAXリクエストが、サーバー側で正当と見なされるようになる。
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function() {
+                        self.parents('.ProductRow').remove();
+                    },
+                    error: function (error) {
+                    //リクエストが失敗した時のエラーをコンソールに表示
+                        console.error("Error:", error);
+                    }
+                });
+            })
         });
     </script>
 @endsection

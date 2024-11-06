@@ -65,18 +65,14 @@ class ProductsController extends Controller
         /**
      * 削除処理
      */
-    public function destroy ($id)
+    public function destroy (Request $request)
     {
-        try {
-            // Productsテーブルから指定のIDのレコード1件を取得
-            $product = Products::find ($id);
-            // レコードを削除
-            $product->delete();
-            // 削除したら一覧画面にリダイレクト
-            return redirect()->route('products.index');
-        } catch (\Exception $e) {
-            return redirect()->route('products.index')->with('error', 'エラーが発生しました。');
-        }
+        // Productsテーブルから指定のIDのレコード1件を取得
+        $product = Products::find($request->input('id'));
+        // レコードを削除
+        $product->delete();
+        // 削除したら一覧画面にリダイレクト
+        return response() -> json();
     }
     //キーワード検索
     public function search(Request $request)

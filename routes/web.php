@@ -37,6 +37,6 @@ Route::get('/products/search', [ProductsController::class, 'search'])->name('pro
 Route::get('/products/{id}', [ProductsController::class, 'detail'])->name('products.detail')->middleware('auth');
 Route::get('/products/{id}/edit', [ProductsController::class, 'edit'])->name('products.edit')->middleware('auth');
 Route::post('/products/{id}/update', [ProductsController::class, 'update'])->name('products.update')->middleware('auth');
-Route::post('/products/destroy/{id}', [ProductsController::class, 'destroy'])->name('products.destroy')->middleware('auth');
+Route::post('/products/destroy', [ProductsController::class, 'destroy'])->name('products.destroy')->middleware('auth');
 
 

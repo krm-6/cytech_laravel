@@ -12,10 +12,8 @@ use Illuminate\Support\Facades\DB;
 class ProductsController extends Controller
 {
     public function index() {
-        $model = new Products();
-        $products = $model->getLists([]);
         $companies = companies::all();
-        return view('products.index', compact('products', 'companies'));
+        return view('products.index', compact('companies'));
     }
     // 商品詳細画面
     public function detail (string $id) {
@@ -67,12 +65,18 @@ class ProductsController extends Controller
      */
     public function destroy (Request $request)
     {
-        // Productsテーブルから指定のIDのレコード1件を取得
-        $product = Products::find($request->input('id'));
-        // レコードを削除
-        $product->delete();
-        // 削除したら一覧画面にリダイレクト
-        return response() -> json();
+        try {
+            
+            // Productsテーブルから指定のIDのレコード1件を取得
+            $product = Products::find($request->input('id'));
+            // レコードを削除
+            $product->delete();
+            // 削除したら一覧画面にリダイレクト
+            return response() -> json();
+        } catch (\Exception $e) {
+            report($e);
+            session()->flash('flash_message', 'エラーが発生しました');
+        }
     }
     //キーワード検索
     public function search(Request $request)
@@ -80,15 +84,23 @@ class ProductsController extends Controller
         // 検索キーワードを取得
         $product_name = $request->input('product_name');
         $company_id = $request->input('company_id');
+        $price_min = $request->input('price_min');
+        $price_max = $request->input('price_max');
         $model = new Products();
         $where = [];
 
-        if ($product_name || $company_id) {
+        if ($product_name || $company_id || $price_min || $price_max) {
             if($product_name){
                 array_push($where, ['product_name', 'like', "%{$product_name}%"]);
             }
             if($company_id){
                 array_push($where, ['company_id', '=', $company_id]);
+            }
+            if ($price_min) {
+                array_push($where, ['price', '>=', $price_min]);
+            }
+            if ($price_max) {
+                array_push($where, ['price', '<=', $price_max]);
             }
         } 
         $products = $model->getLists($where);

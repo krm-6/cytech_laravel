@@ -17,6 +17,9 @@
                     <option value = "{{$company->id}}" {{$company->id===intval(request('company_id')) ? 'selected': ''}}>{{$company->company_name}}</option>
                 @endforeach
             </select>
+            <!-- 価格入力 -->
+            <input type="number" id="priceMin" placeholder="価格（下限）">
+            <input type="number" id="priceMax" placeholder="価格（上限）">
             <button id = "searchBtn" class = "btn">
                 検索
             </button>
@@ -48,33 +51,22 @@
     </tr>
   </thead>
   <tbody>
-    @foreach($products as $product)
-        <tr class = "ProductRow">
-            <td>{{$product->id}}</td>
-            <td><img src="{{ asset('storage/Image/' . $product->img_path) }}" class = "ProductImage"></td>
-            <td>{{$product->product_name}}</td>
-            <td>¥{{$product->price}}</td>
-            <td>{{$product->stock}}</td>
-            <td>{{$product->company_name}}</td>
-            <td>
-                <a href = "{{ route('products.detail', ['id' => $product->id]) }}" class = "btn btn-info">詳細</a>
-                <button class = "btn btn-danger BtnDestroy" data-id = "{{$product->id}}">削除</button>
-            </td>
-        </tr>
-    @endforeach
   </tbody>
 </table>
 
 @endsection
 @section('script')
     <script>
+        //ページが読み込まれたら実行
         $(document).ready(function() {
-            //ページが読み込まれたら実行
-            $('#searchBtn').click(function() {
+
+            const getList = function() {
                 //検索ボタンがクリックされた時の処理
                 //検索ボックスの値を取得して変数に代入
                 let product_name = $('#productName').val();
                 let company_id = $('#companyId').val();
+                let price_min = $('#priceMin').val();
+                let price_max = $('#priceMax').val();
                 //Ajaxリクエストを送信
                 $.ajax({
                     //Larabelのルートヘルパーを使う
@@ -84,7 +76,9 @@
                     //リクエストのデータとして変数を送信。｛｝内の左がキー名。
                     data: { 
                         product_name: product_name,
-                        company_id:  company_id
+                        company_id: company_id,
+                        price_min: price_min,
+                        price_max: price_max
                     },
                     //リクエストが成功した時の処理
                     success: function (data) {
@@ -118,9 +112,17 @@
                         console.error("Error:", error);
                     }
                 });
-            });
-            
+            }
+
+
             //クリックイベントを設定。onclickを使うと後から追加された要素にもイベントを適用できるようになる。
+            // 初期表示時に全件検索
+            getList();
+            // 検索ボタン押下イベント
+            $('#searchBtn').click(function() {
+                getList();
+            });
+            // 削除ボタン押下イベント
             $('#productTable').on('click', '.BtnDestroy',function(e) {
                 //eはクリックイベントのイベントオブジェクト。preventDefault();で削除ボタンのデフォルトのクリック動作をキャンセルできる。
                 e.preventDefault();

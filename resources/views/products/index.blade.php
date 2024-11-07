@@ -4,6 +4,10 @@
 <link rel = "stylesheet" href="{{ asset('/css/index.css') }}">
 @endpush
 
+@push('scriptLib')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.0/js/jquery.tablesorter.min.js" integrity="sha512-2rtCjYosDLad+w5206/5H70qYKuNZmBqezdneblfAlaq1w9JVJx0zyLPee97nG7iYrwqfcf455QTLdE68JFgww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.0/css/theme.default.min.css">
+@endpush
+
 @section('content')
 <h2>商品一覧画面</h2>
 
@@ -98,7 +102,7 @@
                         data.forEach(function (product) {
                             let productDetailUrl = productDetailBaseUrl.replace(':id', product.id);
                             let productDestroyUrl = productDestroyBaseUrl.replace(':id', product.id);
-                        //検索結果を表示する場所の要素に結果のHTMLを挿入して表示
+                            //検索結果を表示する場所の要素に結果のHTMLを挿入して表示
                             $('#productTable tbody').append(`
                                 <tr class = "ProductRow">
                                     <td>${product.id}</td>
@@ -114,6 +118,9 @@
                                 </tr>
                             `);
                         });
+                        
+                        // 現在のtablesorterを破棄して再適用
+                        $("#productTable").trigger("destroy").tablesorter();
                     },
                     error: function (error) {
                     //リクエストが失敗した時のエラーをコンソールに表示
@@ -123,7 +130,10 @@
             }
 
 
+
             //クリックイベントを設定。onclickを使うと後から追加された要素にもイベントを適用できるようになる。
+            //tablesorter実装
+            $('#productTable').tablesorter();
             // 初期表示時に全件検索
             getList();
             // 検索ボタン押下イベント

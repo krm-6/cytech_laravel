@@ -86,10 +86,12 @@ class ProductsController extends Controller
         $company_id = $request->input('company_id');
         $price_min = $request->input('price_min');
         $price_max = $request->input('price_max');
+        $stock_min = $request->input('stock_min');
+        $stock_max = $request->input('stock_max');
         $model = new Products();
         $where = [];
 
-        if ($product_name || $company_id || $price_min || $price_max) {
+        if ($product_name || $company_id || $price_min || $price_max || $stock_min || $stock_max) {
             if($product_name){
                 array_push($where, ['product_name', 'like', "%{$product_name}%"]);
             }
@@ -101,6 +103,12 @@ class ProductsController extends Controller
             }
             if ($price_max) {
                 array_push($where, ['price', '<=', $price_max]);
+            }
+            if($stock_min) {
+                array_push($where, ['stock', '>=', $stock_min]);
+            }
+            if($stock_max) {
+                array_push($where, ['stock', '>=', $stock_max]);
             }
         } 
         $products = $model->getLists($where);

@@ -20,6 +20,10 @@
             <!-- 価格入力 -->
             <input type="number" id="priceMin" placeholder="価格（下限）">
             <input type="number" id="priceMax" placeholder="価格（上限）">
+            <!-- 在庫数入力 -->
+            <input type="number" id="stockMin" placeholder="在庫数（下限）">
+            <input type="number" id="stockMax" placeholder="在庫数（上限）">
+
             <button id = "searchBtn" class = "btn">
                 検索
             </button>
@@ -67,6 +71,8 @@
                 let company_id = $('#companyId').val();
                 let price_min = $('#priceMin').val();
                 let price_max = $('#priceMax').val();
+                let stock_min = $('#stockMin').val();
+                let stock_max = $('#stockMax').val();
                 //Ajaxリクエストを送信
                 $.ajax({
                     //Larabelのルートヘルパーを使う
@@ -78,7 +84,9 @@
                         product_name: product_name,
                         company_id: company_id,
                         price_min: price_min,
-                        price_max: price_max
+                        price_max: price_max,
+                        stock_min: stock_min,
+                        stock_max: stock_max
                     },
                     //リクエストが成功した時の処理
                     success: function (data) {

@@ -133,7 +133,12 @@
 
             //クリックイベントを設定。onclickを使うと後から追加された要素にもイベントを適用できるようになる。
             //tablesorter実装
-            $('#productTable').tablesorter();
+            $('#productTable').tablesorter({
+                headers: {
+                    1: { sorter: false }, // 2列目をソートしない
+                    6: { sorter: false }  // 7列目をソートしない
+                }
+            });
             // 初期表示時に全件検索
             getList();
             // 検索ボタン押下イベント

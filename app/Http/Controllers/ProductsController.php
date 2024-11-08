@@ -91,7 +91,7 @@ class ProductsController extends Controller
         $model = new Products();
         $where = [];
 
-        if ($product_name || $company_id || $price_min || $price_max || $stock_min || $stock_max) {
+        
             if($product_name){
                 array_push($where, ['product_name', 'like', "%{$product_name}%"]);
             }
@@ -110,7 +110,7 @@ class ProductsController extends Controller
             if($stock_max) {
                 array_push($where, ['stock', '>=', $stock_max]);
             }
-        } 
+         
         $products = $model->getLists($where);
         // ビューに検索結果を渡す
         $companies = companies::all();

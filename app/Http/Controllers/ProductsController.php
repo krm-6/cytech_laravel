@@ -88,10 +88,10 @@ class ProductsController extends Controller
         $price_max = $request->input('price_max');
         $stock_min = $request->input('stock_min');
         $stock_max = $request->input('stock_max');
-        $model = new Products();
+        $products = new Products();
         $where = [];
 
-        
+        if ($product_name || $company_id || $price_min || $price_max || $stock_min || $stock_max) {
             if($product_name){
                 array_push($where, ['product_name', 'like', "%{$product_name}%"]);
             }
@@ -110,11 +110,8 @@ class ProductsController extends Controller
             if($stock_max) {
                 array_push($where, ['stock', '>=', $stock_max]);
             }
-         
-        $products = $model->getLists($where);
-        // ビューに検索結果を渡す
-        $companies = companies::all();
-        return response() -> json($products);
+        }
+        return response() -> json($products->getLists($where));
     }
 
     //新規登録画面を表示
@@ -149,19 +146,5 @@ class ProductsController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('products.registration')->with('error', 'エラーが発生しました。');
         }
-    }
-
-    public function registSubmit(ProductsRequest $request) {
-        DB::beginTransaction();
-
-        try {
-            $model = new Products();
-            $model -> registProducts($request);
-            DB::commit();
-        } catch(\Exception $e) {
-            DB::rollBack();
-            return back();
-        }
-        return redirect(route('regist'));
     }
 }

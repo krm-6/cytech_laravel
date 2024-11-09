@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\DB;
 class ProductsController extends Controller
 {
     public function index() {
+        //companiesテーブルに保存されているすべてのレコードを取得。変数に格納。
         $companies = companies::all();
+        //view()は指定したビューを表示するために呼び出す。compact()は指定した変数名と同じ名前で変数をビューに渡すPHP関数。
         return view('products.index', compact('companies'));
     }
     // 商品詳細画面
@@ -32,23 +34,22 @@ class ProductsController extends Controller
     // 商品情報編集画面（更新処理）
     public function update(ProductsRequest $request)
     {   
-            $product_id = $request->input('id');
-            $validated_data = $request->validated();
-            
-            try {
-                // IDに基づいて投稿を取得
-                $product = Products::findOrFail($product_id);
-                $img_path = $request-> img_path ? basename($request->file('img_path')->store('public/Image')) : $product->img_path;
-                $product -> updateProduct($validated_data, $img_path);
-                // 投稿データをedit.blade.phpに渡す
-                return redirect()->route('products.edit', ['id' => $product_id]);
-            } catch (\Exception $e) {
-                return redirect()->route('products.edit', ['id' => $product_id])->with('error', 'エラーが発生しました。');
-            }
+        $product_id = $request->input('id');
+        $validated_data = $request->validated();
+        
+        try {
+            // IDに基づいて投稿を取得
+            $product = Products::findOrFail($product_id);
+            $img_path = $request-> img_path ? basename($request->file('img_path')->store('public/Image')) : $product->img_path;
+            $product -> updateProduct($validated_data, $img_path);
+            // 投稿データをedit.blade.phpに渡す
+            return redirect()->route('products.edit', ['id' => $product_id]);
+        } catch (\Exception $e) {
+            return redirect()->route('products.edit', ['id' => $product_id])->with('error', 'エラーが発生しました。');
+        }
     }
-        /**
-     * 削除処理
-     */
+
+    //削除処理
     public function destroy(Request $request)
     {
         try {
@@ -62,8 +63,9 @@ class ProductsController extends Controller
     }
     //検索
     public function search(Request $request)
-    {
+    {   //検索条件を初期化。空の配列を用意し検索条件をためていく。
         $where = [];
+        //リクエスト->インプットメソッドを使って各検索項目の値をリクエストから取得。各検索項目が指定されていれば対応する検索条件を＄where配列に追加
         if ($request->input('product_name')) {
             $where[] = ['product_name', 'like', "%{$request->input('product_name')}%"];
         }
@@ -82,7 +84,9 @@ class ProductsController extends Controller
         if ($request->input('stock_max')) {
             $where[] = ['stock', '<=', $request->input('stock_max')];
         }
+        //検索条件の配列$whereを引数としてsearchProductsメソッドをProductsモデル内で呼び出し、条件に一致する商品を取得。
         $products = Products::searchProducts($where);
+        //検索結果として得た$productsをJSON形式で返す。非同期リクエストに応じてJsonを返すことで動的に検索結果を表示。
         return response()->json($products);
     }
 

@@ -42,6 +42,17 @@ class products extends Model
         return $this->belongsTo(Companies::class, 'company_id');
     }
     
+    public function updateProduct(array $validated_data, $img_path = null) {
+        return $this-> update(array_merge($validated_data, ['img_path' => $img_path]));
+    }
+
+    public static function deleteProduct(int $id) {
+        $product = self::find($id);
+        if($product) {
+            return $product->delete();
+        }
+        return false;
+    }
     
 
 }

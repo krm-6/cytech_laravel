@@ -32,45 +32,27 @@ class ProductsController extends Controller
     // 商品情報編集画面（更新処理）
     public function update(ProductsRequest $request)
     {   
-            $id = $request->input('id');
-            // IDに基づいて投稿を取得
-            $product = Products::findOrFail($id);
-            $validatedData = $request->validated();
+            $product_id = $request->input('id');
+            $validated_data = $request->validated();
+            
             try {
-                
-                if ($request->img_path) {
-                    $img_path = basename($request->file('img_path')->store('public/Image'));
-                } else {
-                    $img_path = null;
-                }
-
-                $product->update(
-                    [
-                        'product_name' => $validatedData['product_name'],
-                        'company_id' => $validatedData['company_id'],
-                        'price' => $validatedData['price'],
-                        'stock' => $validatedData['stock'],
-                        'comment' => $validatedData['comment'],
-                        'img_path' => $img_path,
-                    ]
-                );
+                // IDに基づいて投稿を取得
+                $product = Products::findOrFail($product_id);
+                $img_path = $request-> img_path ? basename($request->file('img_path')->store('public/Image')) : $product->img_path;
+                $product -> updateProduct($validated_data, $img_path);
                 // 投稿データをedit.blade.phpに渡す
-                return redirect()->route('products.edit', compact('id'));
+                return redirect()->route('products.edit', ['id' => $product_id]);
             } catch (\Exception $e) {
-                return redirect()->route('products.edit', ['id' => $product->id])->with('error', 'エラーが発生しました。');
+                return redirect()->route('products.edit', ['id' => $product_id])->with('error', 'エラーが発生しました。');
             }
     }
         /**
      * 削除処理
      */
-    public function destroy (Request $request)
+    public function destroy(Request $request)
     {
         try {
-            
-            // Productsテーブルから指定のIDのレコード1件を取得
-            $product = Products::find($request->input('id'));
-            // レコードを削除
-            $product->delete();
+            Products::deleteProduct($request->input('id'));
             // 削除したら一覧画面にリダイレクト
             return response() -> json();
         } catch (\Exception $e) {

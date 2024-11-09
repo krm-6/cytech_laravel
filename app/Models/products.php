@@ -54,5 +54,12 @@ class products extends Model
         return false;
     }
     
-
+    public static function searchProducts(array $where)
+    {
+        return self::where($where)
+            ->leftJoin('companies', 'products.company_id', '=', 'companies.id')
+            ->select('products.*', 'companies.company_name')
+            ->where($where)
+            ->get();
+        }
 }

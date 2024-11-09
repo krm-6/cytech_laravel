@@ -60,40 +60,30 @@ class ProductsController extends Controller
             session()->flash('flash_message', 'エラーが発生しました');
         }
     }
-    //キーワード検索
+    //検索
     public function search(Request $request)
     {
-        // 検索キーワードを取得
-        $product_name = $request->input('product_name');
-        $company_id = $request->input('company_id');
-        $price_min = $request->input('price_min');
-        $price_max = $request->input('price_max');
-        $stock_min = $request->input('stock_min');
-        $stock_max = $request->input('stock_max');
-        $products = new Products();
         $where = [];
-
-        if ($product_name || $company_id || $price_min || $price_max || $stock_min || $stock_max) {
-            if($product_name){
-                array_push($where, ['product_name', 'like', "%{$product_name}%"]);
-            }
-            if($company_id){
-                array_push($where, ['company_id', '=', $company_id]);
-            }
-            if ($price_min) {
-                array_push($where, ['price', '>=', $price_min]);
-            }
-            if ($price_max) {
-                array_push($where, ['price', '<=', $price_max]);
-            }
-            if($stock_min) {
-                array_push($where, ['stock', '>=', $stock_min]);
-            }
-            if($stock_max) {
-                array_push($where, ['stock', '>=', $stock_max]);
-            }
+        if ($request->input('product_name')) {
+            $where[] = ['product_name', 'like', "%{$request->input('product_name')}%"];
         }
-        return response() -> json($products->getLists($where));
+        if ($request->input('company_id')) {
+            $where[] = ['company_id', '=', $request->input('company_id')];
+        }
+        if ($request->input('price_min')) {
+            $where[] = ['price', '>=', $request->input('price_min')];
+        }
+        if ($request->input('price_max')) {
+            $where[] = ['price', '<=', $request->input('price_max')];
+        }
+        if ($request->input('stock_min')) {
+            $where[] = ['stock', '>=', $request->input('stock_min')];
+        }
+        if ($request->input('stock_max')) {
+            $where[] = ['stock', '<=', $request->input('stock_max')];
+        }
+        $products = Products::searchProducts($where);
+        return response()->json($products);
     }
 
     //新規登録画面を表示
@@ -106,16 +96,17 @@ class ProductsController extends Controller
 
     // 新規登録処理を行うメソッド
     public function register(ProductsRequest $request)
-    {
+    {   //データのバリデーション
         $validatedData = $request->validated();
         try {
              
             if ($request->img_path) {
+                //画像ファイルパスの取得
                 $img_path = basename($request->file('img_path')->store('public/Image'));
             } else {
                 $img_path = null;
             }
-            // 作成処理
+            // 商品の登録処理
             Products::create([
                 'product_name' => $validatedData['product_name'],
                 'company_id' => $validatedData['company_id'],
@@ -124,6 +115,7 @@ class ProductsController extends Controller
                 'comment' => $validatedData['comment'],
                 'img_path' => $img_path,
             ]);
+            //登録完了後にリダイレクト
             return redirect()->route('products.registration');
         } catch (\Exception $e) {
             return redirect()->route('products.registration')->with('error', 'エラーが発生しました。');
